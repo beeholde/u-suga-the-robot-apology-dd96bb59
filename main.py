@@ -25,8 +25,14 @@ def main() -> None:
         raise ValueError(f"entry is {len(text)} chars, must be 1-{MAX_CHARS}")
     if not text.strip():
         raise ValueError("entry must not be whitespace-only")
-    if text.count("\n") != 1:
+    lines = text.split("\n")
+    if len(lines) != 2:
         raise ValueError("entry must be exactly two lines")
+    for i, line in enumerate(lines, 1):
+        if not line.strip():
+            raise ValueError(f"line {i} must not be empty")
+        if not line.endswith("."):
+            raise ValueError(f"line {i} must end with a full stop (one sentence per line)")
     out_dir = Path("/output")
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / "entry.txt"
